@@ -267,7 +267,7 @@ main:focus{outline:none}
 .form-success b{font-weight:600;overflow-wrap:anywhere}
 .hp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 body{overflow-wrap:break-word}
-h1,h2,h3,h4,.btn{hyphens:auto;-webkit-hyphens:auto}
+.btn{hyphens:auto;-webkit-hyphens:auto}
 .hero .wrap > *,.problem .wrap > *,.how-grid > *,.band .wrap > *,.feature-groups > *,.faq .wrap > *,.close .wrap > *,.plans > *,.footer-grid > *{min-width:0}
 .tbd{white-space:normal;max-width:100%}
 .btn{max-width:100%;text-align:center}
@@ -295,14 +295,9 @@ h1,h2{overflow-wrap:anywhere}
   .site-header .wrap{height:64px}
   .hero .wrap{grid-template-columns:1fr;gap:var(--s8);padding-top:var(--s8);padding-bottom:var(--s9)}
   .demo{justify-self:stretch;width:100%;max-width:440px}
-  .problem .wrap,.how-grid,.band .wrap,.feature-groups,.faq .wrap,.close .wrap{grid-template-columns:1fr;gap:var(--s7)}
-  .steps{display:none}
-  .panels{display:flex;flex-direction:column;gap:var(--s7)}
-  .panel[hidden]{display:block}
-  .panel figcaption{display:block;margin-bottom:var(--s4)}
-  .panel figcaption b{display:block;font-weight:500;font-size:20px;letter-spacing:-.015em}
-  .panel figcaption span{display:block;color:var(--muted);margin-top:var(--s1)}
-  .plans{grid-template-columns:1fr}
+  .problem .wrap,.band .wrap,.feature-groups,.faq .wrap,.close .wrap{grid-template-columns:1fr;gap:var(--s7)}
+  .how-grid{grid-template-columns:5fr 7fr;gap:var(--s6)}
+  .band-media{max-width:560px}
   .footer-grid{grid-template-columns:1fr 1fr}
   .footer-grid > div:first-child{grid-column:1/-1}
   .sticky-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;align-items:center;justify-content:space-between;gap:var(--s4);padding:var(--s3) var(--s4) calc(var(--s3) + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--hairline);transform:translateY(110%);transition:transform .35s var(--ease)}
@@ -312,6 +307,16 @@ h1,h2{overflow-wrap:anywhere}
   .sticky-cta .btn{min-height:48px;flex:0 1 auto}
   .sticky-cta p{min-width:0;flex:1 1 auto}
   body{padding-bottom:84px}
+}
+@media (max-width: 720px){
+  .how-grid{grid-template-columns:1fr;gap:var(--s7)}
+  .steps{display:none}
+  .panels{display:flex;flex-direction:column;gap:var(--s7)}
+  .panel[hidden]{display:block}
+  .panel figcaption{display:block;margin-bottom:var(--s4)}
+  .panel figcaption b{display:block;font-weight:500;font-size:20px;letter-spacing:-.015em}
+  .panel figcaption span{display:block;color:var(--muted);margin-top:var(--s1)}
+  .plans{grid-template-columns:1fr}
 }
 @media (max-width: 520px){
   .logos{gap:var(--s4) var(--s6)}
@@ -345,7 +350,7 @@ h1,h2{overflow-wrap:anywhere}
   <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></symbol>
 </svg>
 
-<p style="margin:0;background:#fff4dc;color:#6b4200;font:500 13px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:8px 16px;border-bottom:1px dashed #d9a441">Design prototype for review. Not the live site. Yellow tags mark facts still to confirm.</p>
+<aside aria-label="Prototype notice" style="margin:0;background:#fff4dc;color:#6b4200;font:500 13px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:8px 16px;border-bottom:1px dashed #d9a441">Design prototype for review. Not the live site. Yellow tags mark facts still to confirm.</aside>
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="MyFit home"><img src="assets/img/icon.svg" alt="" width="40" height="40">MyFit</a>
@@ -488,7 +493,7 @@ h1,h2{overflow-wrap:anywhere}
     <h2 class="h2" id="garments-h">If you sell it as apparel, MyFit can size it.</h2>
     <p class="lede">Every garment maps to a body zone (upper, lower or full body) with a starter set of measurements. You choose which ones count.</p>
   </div>
-  <ul class="garment-row" aria-label="Supported garment types">
+  <ul class="garment-row" aria-label="Supported garment types" tabindex="0">
     <li><img src="assets/img/apparel-tshirt.webp" alt="" width="400" height="400" loading="lazy"><span>T-shirt</span></li>
     <li><img src="assets/img/apparel-shirt.webp" alt="" width="400" height="400" loading="lazy"><span>Shirt</span></li>
     <li><img src="assets/img/apparel-hoodie.webp" alt="" width="400" height="496" loading="lazy"><span>Hoodie</span></li>
