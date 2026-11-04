@@ -35,4 +35,11 @@ company name. The full list is at the end of `docs/copy-deck.md`.
 
 Links to Help center, Contact, Privacy and Terms point at the live
 myfitsize.com pages. Install buttons go to the real Shopify App Store listing.
-The walkthrough form validates input but does not send anything.
+The walkthrough form validates input but does not send anything yet. To connect
+it, set `data-endpoint` on `<form id="walkthrough-form">` to a URL that accepts a
+JSON `POST` with `firstName`, `email`, `store` and `plan`. The form already
+handles the sending state, double submits, timeouts (`data-timeout`, default
+15 seconds), 4xx, 429 and 5xx responses, and offline errors, and keeps what the
+visitor typed. A hidden honeypot field (`company_website`) quietly drops bot
+submissions. Validate again on the server; the browser checks are only a
+convenience.

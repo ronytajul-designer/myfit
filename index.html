@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.replace("no-js","js")</script>
 <title>MyFit: Size quiz app for Shopify apparel stores</title>
 <meta name="description" content="Layout prototype for myfitsize.com. Restructured reading order, pricing, single install path, mobile sticky CTA.">
 <link rel="preconnect" href="https://api.fontshare.com">
@@ -117,7 +118,7 @@ p{margin:0}
 .quiz-actions{display:flex;gap:10px;margin-top:20px}
 .quiz-actions div{flex:1;height:40px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:500;border:1px solid #e3e8ef}
 .quiz-actions div:last-child{background:#0f1728;color:#fff;border-color:#0f1728}
-.play{white-space:nowrap;position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.play{white-space:nowrap;max-width:calc(100% - 32px);position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
 .demo-video{width:100%;border-radius:16px;display:none;background:#000}
 .demo.is-playing .quiz{display:none}
 .demo.is-playing .demo-video{display:block}
@@ -245,6 +246,36 @@ p{margin:0}
 .walkthrough.is-sent .form{display:none}
 .walkthrough.is-sent .form-success{display:block}
 
+/* hardening: skip link, no-JS fallbacks, states */
+.skip{position:absolute;left:var(--s4);top:-80px;z-index:50;background:var(--ink);color:var(--on-ink);padding:var(--s3) var(--s4);border-radius:10px;text-decoration:none;font-weight:500}
+.skip:focus{top:var(--s4)}
+main:focus{outline:none}
+.no-js .steps{display:none}
+.no-js .how-grid{grid-template-columns:1fr}
+.no-js .panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:var(--s7)}
+.no-js .panel figcaption{display:block;margin-bottom:var(--s4)}
+.no-js .panel figcaption b{display:block;font-weight:500;font-size:20px}
+.no-js .panel figcaption span{display:block;color:var(--muted)}
+.no-js .quiz,.no-js .play{display:none}
+.no-js .demo-video{display:block}
+.demo-error{margin-top:var(--s7);font-size:15px;color:var(--on-ink)}
+.demo-error:empty{display:none}
+.play[aria-busy="true"]{cursor:progress;opacity:.85}
+.form-error{padding:var(--s3) var(--s4);border-radius:10px;background:#fef3f2;color:var(--error);font:400 15px/1.5 var(--font-ui)}
+.form-error:focus{outline:2px solid var(--error);outline-offset:2px}
+.form .btn[aria-busy="true"]{cursor:progress;opacity:.8}
+.form-success b{font-weight:600;overflow-wrap:anywhere}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+body{overflow-wrap:break-word}
+h1,h2,h3,h4,.btn{hyphens:auto;-webkit-hyphens:auto}
+.hero .wrap > *,.problem .wrap > *,.how-grid > *,.band .wrap > *,.feature-groups > *,.faq .wrap > *,.close .wrap > *,.plans > *,.footer-grid > *{min-width:0}
+.tbd{white-space:normal;max-width:100%}
+.btn{max-width:100%;text-align:center}
+.form > *,.field input,.field select{min-width:0}
+.pricing-head > *{min-width:0;flex:1 1 320px}
+h1,h2{overflow-wrap:anywhere}
+.pdp > *{min-width:0}
+
 /* footer */
 .site-footer{border-top:1px solid var(--hairline);padding:var(--s8) 0 var(--s7)}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--s6)}
@@ -278,7 +309,8 @@ p{margin:0}
   .sticky-cta.is-on{transform:none}
   .sticky-cta p{font-size:14px;line-height:1.35;color:var(--muted)}
   .sticky-cta p strong{display:block;color:var(--ink);font-weight:500;font-size:15px}
-  .sticky-cta .btn{min-height:48px;flex:none}
+  .sticky-cta .btn{min-height:48px;flex:0 1 auto}
+  .sticky-cta p{min-width:0;flex:1 1 auto}
   body{padding-bottom:84px}
 }
 @media (max-width: 520px){
@@ -287,13 +319,15 @@ p{margin:0}
   .stats li{grid-template-columns:1fr;gap:var(--s2)}
   .demo-stage{padding:var(--s4) var(--s4) var(--s5)}
   .hero-ctas .btn{width:100%}
+  .play{white-space:normal;text-align:center;line-height:1.25;padding-block:var(--s2)}
 }
 @media (prefers-reduced-motion: reduce){
   *{transition-duration:.01ms !important}
 }
 </style>
 </head>
-<body>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
@@ -335,11 +369,11 @@ p{margin:0}
   </div>
 </header>
 
-<main id="top">
+<main id="main" tabindex="-1">
 
 <section class="hero on-ink" id="hero">
   <div class="hero-bg" aria-hidden="true">
-    <img src="assets/img/hero-2.webp" alt=""><img src="assets/img/hero-4.webp" alt=""><img src="assets/img/hero-8.webp" alt="">
+    <img src="assets/img/hero-2.webp" alt="" width="640" height="800" fetchpriority="high"><img src="assets/img/hero-4.webp" alt="" width="640" height="640"><img src="assets/img/hero-8.webp" alt="" width="640" height="850">
   </div>
   <div class="wrap">
     <div>
@@ -374,8 +408,9 @@ p{margin:0}
             <div class="quiz-actions"><div>Size chart</div><div>Continue</div></div>
           </div>
         </div>
-        <video class="demo-video" src="assets/media/demo.mp4" muted playsinline controls preload="none" aria-label="Shopper demo: filling in the MyFit size quiz"></video>
-        <button class="btn btn-light play" type="button" id="play"><svg><use href="#i-play"/></svg>Play shopper demo</button>
+        <video class="demo-video" src="assets/media/demo.mp4" poster="assets/img/demo-poster.webp" muted playsinline controls preload="none" aria-label="Shopper demo: filling in the MyFit size quiz"></video>
+        <button class="btn btn-light play" type="button" id="play"><svg><use href="#i-play"/></svg><span>Play shopper demo</span></button>
+        <p class="demo-error" id="demo-error" role="status"></p>
       </div>
     </div>
   </div>
@@ -385,13 +420,13 @@ p{margin:0}
   <div class="wrap">
     <p>Used by apparel stores like <span class="tbd">VERIFY: all current customers</span></p>
     <ul class="logos">
-      <li><img src="assets/img/logo-nudge.webp" alt="nudge" width="90"></li>
-      <li><img src="assets/img/logo-lot.webp" alt="LOT." width="90"></li>
-      <li><img src="assets/img/logo-jjshouse.webp" alt="JJ's House" width="130"></li>
-      <li><img src="assets/img/logo-greymoritz.svg" alt="Grey Moritz" width="150"></li>
-      <li><img src="assets/img/logo-nuvira.svg" alt="Nuvira" width="80"></li>
-      <li><img src="assets/img/logo-vila.svg" alt="VILA" width="130"></li>
-      <li><img src="assets/img/logo-girav.webp" alt="Girav" width="90"></li>
+      <li><img src="assets/img/logo-nudge.webp" alt="nudge" width="214" height="96" loading="lazy"></li>
+      <li><img src="assets/img/logo-lot.webp" alt="LOT." width="274" height="96" loading="lazy"></li>
+      <li><img src="assets/img/logo-jjshouse.webp" alt="JJ's House" width="538" height="96" loading="lazy"></li>
+      <li><img src="assets/img/logo-greymoritz.svg" alt="Grey Moritz" width="207" height="32" loading="lazy"></li>
+      <li><img src="assets/img/logo-nuvira.svg" alt="Nuvira" width="76" height="32" loading="lazy"></li>
+      <li><img src="assets/img/logo-vila.svg" alt="VILA" width="186" height="32" loading="lazy"></li>
+      <li><img src="assets/img/logo-girav.webp" alt="Girav" width="462" height="96" loading="lazy"></li>
     </ul>
   </div>
 </section>
@@ -425,10 +460,10 @@ p{margin:0}
       </div>
       <div class="panels">
         <figure class="panel" role="tabpanel" id="p1" aria-labelledby="t1"><figcaption><b>Import your size chart</b><span>Upload a screenshot. Get a working size chart.</span></figcaption><img src="assets/img/slide-1.webp" alt="Size chart editor built from an uploaded image, with XS to XL rows filled in" width="1152" height="1200" loading="lazy"></figure>
-        <figure class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden><figcaption><b>Place the block</b><span>Drag the MyFit block exactly where it belongs in the theme editor.</span></figcaption><img src="assets/img/slide-4.webp" alt="Shopify theme editor with the MyFit block placed between Variant picker and Buy buttons" width="1152" height="1200" loading="lazy"></figure>
-        <figure class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden><figcaption><b>Match your brand</b><span>Colors, fonts and button styles match your store.</span></figcaption><img src="assets/img/slide-3.webp" alt="Quiz style settings for label text, font size, colors and border radius next to a styled quiz step" width="1152" height="1200" loading="lazy"></figure>
-        <figure class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden><figcaption><b>40+ languages</b><span>The quiz switches to your shopper's language, including right-to-left ones like Arabic.</span></figcaption><img src="assets/img/slide-5.webp" alt="The quiz shown in German, French and Arabic, with a picker listing more languages" width="1152" height="1200" loading="lazy"></figure>
-        <figure class="panel" role="tabpanel" id="p5" aria-labelledby="t5" hidden><figcaption><b>See what shoppers did</b><span>Quiz completions and recommended sizes for every product.</span></figcaption><img src="assets/img/slide-2.webp" alt="Merchant dashboard with quiz completions, purchase rate and plan usage" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p2" aria-labelledby="t2"><figcaption><b>Place the block</b><span>Drag the MyFit block exactly where it belongs in the theme editor.</span></figcaption><img src="assets/img/slide-4.webp" alt="Shopify theme editor with the MyFit block placed between Variant picker and Buy buttons" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p3" aria-labelledby="t3"><figcaption><b>Match your brand</b><span>Colors, fonts and button styles match your store.</span></figcaption><img src="assets/img/slide-3.webp" alt="Quiz style settings for label text, font size, colors and border radius next to a styled quiz step" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p4" aria-labelledby="t4"><figcaption><b>40+ languages</b><span>The quiz switches to your shopper's language, including right-to-left ones like Arabic.</span></figcaption><img src="assets/img/slide-5.webp" alt="The quiz shown in German, French and Arabic, with a picker listing more languages" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p5" aria-labelledby="t5"><figcaption><b>See what shoppers did</b><span>Quiz completions and recommended sizes for every product.</span></figcaption><img src="assets/img/slide-2.webp" alt="Merchant dashboard with quiz completions, purchase rate and plan usage" width="1152" height="1200" loading="lazy"></figure>
       </div>
     </div>
   </div>
@@ -442,7 +477,7 @@ p{margin:0}
       <a class="btn btn-light btn-lg" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener"><svg><use href="#i-bag"/></svg>Install free on Shopify</a>
     </div>
     <div class="band-media">
-      <img src="assets/img/store-product.webp" alt="" loading="lazy">
+      <img src="assets/img/store-product.webp" alt="" width="899" height="900" loading="lazy">
       <div class="pdp" aria-hidden="true"><b>High-Rise Straight Jeans</b><span>$159 USD</span><i><svg><use href="#i-ruler"/></svg>Find your size</i></div>
     </div>
   </div>
@@ -454,15 +489,15 @@ p{margin:0}
     <p class="lede">Every garment maps to a body zone (upper, lower or full body) with a starter set of measurements. You choose which ones count.</p>
   </div>
   <ul class="garment-row" aria-label="Supported garment types">
-    <li><img src="assets/img/apparel-tshirt.webp" alt="" loading="lazy"><span>T-shirt</span></li>
-    <li><img src="assets/img/apparel-shirt.webp" alt="" loading="lazy"><span>Shirt</span></li>
-    <li><img src="assets/img/apparel-hoodie.webp" alt="" loading="lazy"><span>Hoodie</span></li>
-    <li><img src="assets/img/apparel-shorts.webp" alt="" loading="lazy"><span>Shorts</span></li>
-    <li><img src="assets/img/apparel-trouser.webp" alt="" loading="lazy"><span>Trousers</span></li>
-    <li><img src="assets/img/apparel-skirt.webp" alt="" loading="lazy"><span>Skirt</span></li>
-    <li><img src="assets/img/apparel-dress.webp" alt="" loading="lazy"><span>Dress</span></li>
-    <li><img src="assets/img/apparel-jumpsuit.webp" alt="" loading="lazy"><span>Jumpsuit</span></li>
-    <li><img src="assets/img/apparel-swimsuit.webp" alt="" loading="lazy"><span>Swimsuit</span></li>
+    <li><img src="assets/img/apparel-tshirt.webp" alt="" width="400" height="400" loading="lazy"><span>T-shirt</span></li>
+    <li><img src="assets/img/apparel-shirt.webp" alt="" width="400" height="400" loading="lazy"><span>Shirt</span></li>
+    <li><img src="assets/img/apparel-hoodie.webp" alt="" width="400" height="496" loading="lazy"><span>Hoodie</span></li>
+    <li><img src="assets/img/apparel-shorts.webp" alt="" width="400" height="400" loading="lazy"><span>Shorts</span></li>
+    <li><img src="assets/img/apparel-trouser.webp" alt="" width="400" height="400" loading="lazy"><span>Trousers</span></li>
+    <li><img src="assets/img/apparel-skirt.webp" alt="" width="400" height="496" loading="lazy"><span>Skirt</span></li>
+    <li><img src="assets/img/apparel-dress.webp" alt="" width="400" height="400" loading="lazy"><span>Dress</span></li>
+    <li><img src="assets/img/apparel-jumpsuit.webp" alt="" width="400" height="400" loading="lazy"><span>Jumpsuit</span></li>
+    <li><img src="assets/img/apparel-swimsuit.webp" alt="" width="400" height="496" loading="lazy"><span>Swimsuit</span></li>
   </ul>
 </section>
 
@@ -551,17 +586,20 @@ p{margin:0}
     <div class="walkthrough" id="walkthrough">
       <h3>Running a larger store?</h3>
       <p>Book a 15-minute walkthrough. We'll set it up on your own products and size charts.</p>
-      <form class="form" novalidate>
-        <div class="field"><label for="f-name">First name</label><input id="f-name" name="firstName" autocomplete="given-name" required><p class="err" id="f-name-err">Enter your first name.</p></div>
-        <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="name@yourstore.com" required><p class="err" id="f-email-err">Enter an email like name@yourstore.com.</p></div>
-        <div class="field"><label for="f-store">Store URL</label><input id="f-store" name="store" inputmode="url" placeholder="yourstore.com" required><p class="err" id="f-store-err">Enter your store's web address.</p></div>
+      <form class="form" id="walkthrough-form" novalidate data-endpoint="" data-timeout="15000">
+        <noscript><p class="consent">This form needs JavaScript. You can reach us on the <a href="https://www.myfitsize.com/contact">contact page</a> instead.</p></noscript>
+        <p class="form-error" id="form-error" role="alert" tabindex="-1" hidden></p>
+        <div class="field"><label for="f-name">First name</label><input id="f-name" name="firstName" autocomplete="given-name" maxlength="80" required><p class="err" id="f-name-err">Enter your first name.</p></div>
+        <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" placeholder="name@yourstore.com" required><p class="err" id="f-email-err">Enter an email like name@yourstore.com.</p></div>
+        <div class="field"><label for="f-store">Store URL</label><input id="f-store" name="store" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" maxlength="200" placeholder="yourstore.com" required><p class="err" id="f-store-err">Enter your store's web address, like yourstore.com or yourstore.myshopify.com.</p></div>
         <div class="field"><label for="f-plan">Which Shopify plan are you on?</label>
-          <select id="f-plan" name="plan" required><option value="">Select a plan</option><option>Shopify</option><option>Shopify Plus</option><option>Not on Shopify yet</option></select>
-          <p class="help">MyFit currently works on Shopify only.</p><p class="err" id="f-plan-err">Choose your Shopify plan.</p></div>
+          <select id="f-plan" name="plan" aria-describedby="f-plan-help" required><option value="">Select a plan</option><option>Shopify</option><option>Shopify Plus</option><option>Not on Shopify yet</option></select>
+          <p class="help" id="f-plan-help">MyFit currently works on Shopify only.</p><p class="err" id="f-plan-err">Choose your Shopify plan.</p></div>
         <p class="consent">We use these details to contact you about MyFit. You can unsubscribe anytime. Our <a href="https://www.myfitsize.com/privacy">Privacy Policy</a> explains how we handle your data.</p>
-        <button class="btn btn-ink" type="submit">Book my walkthrough</button>
+        <div class="hp" aria-hidden="true"><label for="f-hp">Leave this empty</label><input id="f-hp" name="company_website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn btn-ink" type="submit"><span>Book my walkthrough</span></button>
       </form>
-      <p class="form-success" role="status" id="sent">Thanks. We'll email you within <span class="tbd">DATA: 1 business day</span> to pick a time.</p>
+      <p class="form-success" role="status" id="sent" tabindex="-1">Thanks<span data-name></span>. We'll email <b data-email>you</b> within <span class="tbd">DATA: 1 business day</span> to pick a time.</p>
     </div>
   </div>
 </section>
@@ -606,19 +644,38 @@ p{margin:0}
       if(n){e.preventDefault();select(n,true);}
     });
   });
+  if(tabs.length)select(tabs[0]); // panels stay visible without JS
 })();
 
-// Hero demo: swap the static quiz for the real recording
-document.getElementById('play').addEventListener('click',()=>{
+// Hero demo: swap the static quiz for the real recording; recover if it fails to load
+(function(){
   const d=document.getElementById('demo-player');const v=d.querySelector('video');
-  d.classList.add('is-playing');v.play().catch(()=>{});v.focus();
-});
+  const btn=document.getElementById('play');const label=btn.querySelector('span');const msg=document.getElementById('demo-error');
+  let timer=null;
+  const reset=(text)=>{clearTimeout(timer);btn.removeAttribute('aria-busy');btn.disabled=false;d.classList.remove('is-playing');label.textContent=text||'Play shopper demo';};
+  const fail=()=>{reset('Try again');msg.textContent="The demo didn't load. Check your connection and try again.";};
+  v.addEventListener('playing',()=>{clearTimeout(timer);btn.removeAttribute('aria-busy');msg.textContent='';d.classList.add('is-playing');v.focus();});
+  v.addEventListener('error',fail);
+  btn.addEventListener('click',()=>{
+    if(btn.getAttribute('aria-busy'))return;
+    msg.textContent='';btn.setAttribute('aria-busy','true');btn.disabled=true;label.textContent='Loading demo';
+    if(v.error||v.networkState===3){v.load();}
+    timer=setTimeout(()=>{if(v.paused)fail();},15000);
+    const pr=v.play();if(pr)pr.catch(err=>{if(err&&err.name!=='AbortError')fail();});
+  });
+})();
 
-// Close menu after choosing a link
-document.querySelectorAll('.menu-panel a').forEach(a=>a.addEventListener('click',()=>a.closest('details').open=false));
+// Mobile menu: close on link, Escape, or a tap outside
+(function(){
+  const m=document.querySelector('.menu');if(!m)return;
+  m.querySelectorAll('.menu-panel a').forEach(a=>a.addEventListener('click',()=>m.open=false));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&m.open){m.open=false;m.querySelector('summary').focus();}});
+  document.addEventListener('click',e=>{if(m.open&&!m.contains(e.target))m.open=false;});
+})();
 
 // Mobile sticky install bar: on after the hero, off when the closing CTA is in view
 (function(){
+  if(!('IntersectionObserver' in window))return; // bar simply stays hidden
   const bar=document.getElementById('sticky');const link=bar.querySelector('a');
   let pastHero=false,atClose=false;
   const sync=()=>{const on=pastHero&&!atClose;bar.classList.toggle('is-on',on);bar.setAttribute('aria-hidden',!on);link.tabIndex=on?0:-1;};
@@ -627,18 +684,68 @@ document.querySelectorAll('.menu-panel a').forEach(a=>a.addEventListener('click'
   new IntersectionObserver(es=>{es.forEach(e=>{atClose=e.isIntersecting||e.boundingClientRect.top<0;});sync();}).observe(document.getElementById('demo'));
 })();
 
-// Walkthrough form: inline validation, then success state
+// Walkthrough form: validation, submit states, network errors, success
 (function(){
-  const box=document.getElementById('walkthrough');const form=box.querySelector('form');
-  form.addEventListener('submit',e=>{
-    e.preventDefault();let first=null;
-    form.querySelectorAll('input,select').forEach(el=>{
-      const f=el.closest('.field');const ok=el.checkValidity()&&el.value.trim()!=='';
-      if(ok){f.removeAttribute('data-invalid');el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');}
-      else{f.setAttribute('data-invalid','');el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',el.id+'-err');first=first||el;}
-    });
+  const box=document.getElementById('walkthrough');const form=document.getElementById('walkthrough-form');
+  const btn=form.querySelector('button[type=submit]');const btnLabel=btn.querySelector('span');
+  const errBox=document.getElementById('form-error');const sent=document.getElementById('sent');
+  const fields=[...form.querySelectorAll('.field input,.field select')];
+  const storeRe=/^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/\S*)?$/i;
+  let tried=false,busy=false;
+
+  const valid=el=>{
+    const v=el.value.trim();
+    if(!v)return false;
+    if(el.type==='email')return el.checkValidity()&&/@[^@\s]+\.[^@\s]+$/.test(v);
+    if(el.name==='store')return storeRe.test(v);
+    return el.checkValidity();
+  };
+  const mark=el=>{
+    const f=el.closest('.field');const ok=valid(el);
+    const base=el.id==='f-plan'?'f-plan-help':'';
+    if(ok){f.removeAttribute('data-invalid');el.removeAttribute('aria-invalid');base?el.setAttribute('aria-describedby',base):el.removeAttribute('aria-describedby');}
+    else{f.setAttribute('data-invalid','');el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',(base?base+' ':'')+el.id+'-err');}
+    return ok;
+  };
+  fields.forEach(el=>{
+    el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{if(tried)mark(el);});
+    el.addEventListener('blur',()=>{if(tried)mark(el);});
+  });
+  const showError=t=>{errBox.textContent=t;errBox.hidden=false;errBox.focus();};
+  const setBusy=on=>{busy=on;btn.disabled=on;on?btn.setAttribute('aria-busy','true'):btn.removeAttribute('aria-busy');btnLabel.textContent=on?'Sending':'Book my walkthrough';};
+  const succeed=data=>{
+    sent.querySelector('[data-name]').textContent=data.firstName?', '+data.firstName:'';
+    sent.querySelector('[data-email]').textContent=data.email||'you';
+    box.classList.add('is-sent');sent.focus();
+  };
+
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();if(busy)return;
+    tried=true;errBox.hidden=true;
+    let first=null;fields.forEach(el=>{if(!mark(el))first=first||el;});
     if(first){first.focus();return;}
-    box.classList.add('is-sent');document.getElementById('sent').focus?.();
+    const data=Object.fromEntries(new FormData(form));
+    Object.keys(data).forEach(k=>data[k]=String(data[k]).trim());
+    if(data.company_website){succeed(data);return;} // honeypot: quietly drop bots
+    delete data.company_website;
+    data.store=data.store.replace(/^https?:\/\//i,'').replace(/\/+$/,'');
+    const endpoint=form.dataset.endpoint;
+    setBusy(true);
+    if(!endpoint){ // prototype mode: no backend connected yet
+      setTimeout(()=>{setBusy(false);succeed(data);},600);return;
+    }
+    const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),Number(form.dataset.timeout)||15000);
+    try{
+      const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),signal:ctrl.signal});
+      if(res.ok){succeed(data);return;}
+      if(res.status===429)showError('Too many requests from this connection. Wait a minute, then try again.');
+      else if(res.status>=400&&res.status<500)showError("Some details didn't go through. Check the fields above and try again.");
+      else showError("We couldn't send your request because of a problem on our side. Try again in a few minutes, or use the contact page.");
+    }catch(err){
+      showError(err&&err.name==='AbortError'
+        ?'This is taking too long. Check your connection and try again. Your details are still here.'
+        :"We couldn't send your request. Check your connection and try again. Your details are still here.");
+    }finally{clearTimeout(t);setBusy(false);}
   });
 })();
 </script>
