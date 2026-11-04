@@ -244,14 +244,14 @@ The current lines start with "Of", which only works if the visitor reads the num
 
 ## Facts to confirm before shipping (blocking)
 
-1. Language count: 5 or 40+? And is any right-to-left language included?
+1. ~~Language count~~ **Confirmed 2026-11-04: 40+ languages, including right-to-left.** Update the Shopify App Store listing, which still shows 5.
 2. Does the quiz have visual steps?
 3. Theme support: only Online Store 2.0 themes, or vintage themes too?
 4. Is brand matching automatic or set by the merchant? Does the Free plan show a "Powered by MyFit" mark?
 5. Are the logos current customers?
 6. Sources for 42% / $25+ / 52%.
 7. How "returns prevented" is measured.
-8. Does Unlimited include advanced analytics? What counts as one "quiz"?
+8. Does Unlimited include advanced analytics? What counts as one "quiz"? (Prices themselves confirmed 2026-11-04: Free 25 quizzes/month, Unlimited $4/month, 14-day trial.)
 9. Script weight, for the speed FAQ.
 10. Shopper data storage, retention and GDPR status.
 11. MyFit Inc. vs Redcircle Digital.
