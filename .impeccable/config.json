@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-04T16:01:15.481Z",
+        "reason": "agent: Inter is the incumbent UI face of myfitsize.com (quiz widget and form text); prototype preserves the existing visual world"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-04T16:01:15.491Z",
+        "reason": "agent: static scan misses .wrap gutter padding; rendered 1440px and 390px screenshots show 16-112px insets on every section and the FAQ summary has 16px vertical padding"
+      }
+    ]
+  }
+}

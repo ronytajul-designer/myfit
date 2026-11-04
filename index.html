@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyFit: Size quiz app for Shopify apparel stores</title>
+<meta name="description" content="Layout prototype for myfitsize.com. Restructured reading order, pricing, single install path, mobile sticky CTA.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#0a0a0a;
+  --ink-2:#2b2f36;
+  --muted:#5b6472;
+  --hairline:#e6e9ee;
+  --surface:#ffffff;
+  --surface-alt:#f6f6f4;
+  --on-ink:#ffffff;
+  --on-ink-muted:rgba(255,255,255,.72);
+  --tbd-bg:#fff4dc;
+  --tbd-ink:#6b4200;
+  --tbd-line:#d9a441;
+  --error:#b42318;
+  --success:#05603a;
+
+  /* 4-based spacing scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+  --section:clamp(80px, 9vw, 128px);
+  --gutter:clamp(16px, 5vw, 112px);
+  --max:1216px;
+  --radius:16px;
+  --radius-pill:999px;
+  --font:'Satoshi', ui-sans-serif, system-ui, sans-serif;
+  --font-ui:'Inter', ui-sans-serif, system-ui, sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--surface);color:var(--ink);font:400 17px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+::selection{background:var(--ink);color:var(--on-ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+.on-ink :focus-visible{outline-color:var(--on-ink)}
+h1,h2,h3,h4{margin:0;font-weight:400;letter-spacing:-.03em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:calc(var(--max) + var(--gutter)*2);margin:0 auto;padding:0 var(--gutter)}
+.section{padding:var(--section) 0}
+.h2{font-size:clamp(32px,4.2vw,52px);line-height:1.08}
+.lede{color:var(--muted);font-size:18px;max-width:56ch}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* prototype markers for unverified facts */
+.tbd{display:inline-block;font:500 12px/1.4 var(--font-ui);letter-spacing:0;color:var(--tbd-ink);background:var(--tbd-bg);border:1px dashed var(--tbd-line);border-radius:6px;padding:1px 6px;vertical-align:middle;white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);min-height:48px;padding:0 var(--s5);border-radius:var(--radius-pill);font:500 16px/1 var(--font);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn-ink{background:var(--ink);color:var(--on-ink)}
+.btn-ink:hover{background:var(--ink-2)}
+.btn-light{background:var(--on-ink);color:var(--ink)}
+.btn-light:hover{background:#ececec}
+.btn-line{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-line:hover{background:var(--surface-alt)}
+.btn-lg{min-height:56px;padding:0 var(--s6);font-size:17px}
+.btn svg{width:18px;height:18px;flex:none}
+.link{display:inline-flex;align-items:center;min-height:44px;font-weight:500}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--hairline)}
+.site-header .wrap{display:flex;align-items:center;gap:var(--s6);height:72px}
+.brand{display:flex;align-items:center;min-height:44px;gap:var(--s3);text-decoration:none;font-weight:500;font-size:18px}
+.brand img{width:40px;height:40px;border-radius:10px}
+.nav{display:flex;gap:var(--s6);margin-left:auto}
+.nav a{text-decoration:none;color:var(--muted);font-size:15px;min-height:44px;display:flex;align-items:center}
+.nav a:hover{color:var(--ink)}
+.header-cta{min-height:44px;padding:0 var(--s5);font-size:15px}
+.menu{display:none;position:relative}
+.menu summary{list-style:none;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:12px}
+.menu summary::-webkit-details-marker{display:none}
+.menu summary svg{width:22px;height:22px}
+.menu-panel{position:absolute;right:0;top:52px;width:min(280px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);box-shadow:0 12px 32px -8px rgba(10,10,10,.18);padding:var(--s2)}
+.menu-panel a{display:flex;align-items:center;min-height:48px;padding:0 var(--s4);border-radius:10px;text-decoration:none}
+.menu-panel a:hover{background:var(--surface-alt)}
+
+/* hero */
+.hero{position:relative;color:var(--on-ink);overflow:hidden;background:#1b1b1d}
+.hero-bg{position:absolute;inset:-40px;display:grid;grid-template-columns:repeat(3,1fr);filter:blur(22px) saturate(.9);opacity:.85}
+.hero-bg img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.62) 0%,rgba(10,10,10,.38) 55%,rgba(10,10,10,.2) 100%)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s8);align-items:center;padding-top:var(--s9);padding-bottom:var(--s9)}
+.hero h1{font-size:clamp(44px,6vw,80px);line-height:1.02;letter-spacing:-.035em;font-weight:400}
+.hero-sub{margin-top:var(--s5);font-size:clamp(18px,1.6vw,21px);line-height:1.5;color:var(--on-ink-muted);max-width:40ch}
+.hero-ctas{margin-top:var(--s7);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s5)}
+.hero-ctas .link{color:var(--on-ink)}
+.terms{margin-top:var(--s5);display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);list-style:none;padding:0;font-size:15px;color:var(--on-ink-muted)}
+.terms li{display:flex;align-items:center;gap:var(--s2)}
+.terms svg{width:16px;height:16px;flex:none}
+.terms strong{color:var(--on-ink);font-weight:500}
+
+.demo{justify-self:end;width:min(100%,440px)}
+.demo-caption{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4);margin-bottom:var(--s3);font-size:15px;color:var(--on-ink-muted)}
+.demo-caption strong{color:var(--on-ink);font-weight:500}
+.demo-stage{position:relative;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:var(--s6) var(--s6) var(--s5)}
+.quiz{font-family:var(--font-ui);background:#fff;color:#121926;border-radius:16px;box-shadow:0 24px 48px -16px rgba(0,0,0,.45);overflow:hidden}
+.quiz-top{display:flex;justify-content:center;padding:14px;border-bottom:1px solid #eef2f6;font-size:13px;font-weight:500}
+.quiz-body{padding:20px 20px 22px}
+.quiz-title{text-align:center;font-size:17px;font-weight:600}
+.quiz-hint{text-align:center;font-size:13px;color:#4b5565;margin-top:4px}
+.quiz-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.quiz-field span{display:block;font-size:12px;font-weight:500;margin-bottom:6px}
+.quiz-field div{height:38px;border:1px solid #e3e8ef;border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:13px;color:#4b5565}
+.quiz-field.full{grid-column:1/-1}
+.quiz-actions{display:flex;gap:10px;margin-top:20px}
+.quiz-actions div{flex:1;height:40px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:500;border:1px solid #e3e8ef}
+.quiz-actions div:last-child{background:#0f1728;color:#fff;border-color:#0f1728}
+.play{white-space:nowrap;position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.demo-video{width:100%;border-radius:16px;display:none;background:#000}
+.demo.is-playing .quiz{display:none}
+.demo.is-playing .demo-video{display:block}
+.demo.is-playing .play{display:none}
+.rating{display:flex;align-items:center;gap:var(--s2);margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid rgba(255,255,255,.22);max-width:520px;font-size:15px;color:var(--on-ink-muted)}
+.rating svg{width:16px;height:16px}
+.rating strong{color:var(--on-ink);font-weight:500}
+
+/* customers */
+.customers{padding:var(--s8) 0 0}
+.customers p{text-align:center;color:var(--muted);font-size:15px}
+.logos{list-style:none;margin:var(--s5) 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:var(--s5) var(--s7)}
+.logos img{height:24px;width:auto;filter:grayscale(1);opacity:.6}
+
+/* problem */
+.problem .wrap{display:grid;grid-template-columns:5fr 7fr;gap:var(--s8);align-items:start}
+.problem .h2{max-width:14ch}
+.problem .btn{margin-top:var(--s6)}
+.stats{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
+.stats li{display:grid;grid-template-columns:140px 1fr;gap:var(--s5);align-items:baseline;padding:var(--s5) 0;border-bottom:1px solid var(--hairline)}
+.stats b{font-weight:400;font-size:40px;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.stats p{color:var(--ink-2)}
+.stats .tbd{margin-top:var(--s2)}
+
+/* how it works */
+.how{background:var(--surface-alt)}
+.how-head{max-width:720px}
+.how-grid{margin-top:var(--s8);display:grid;grid-template-columns:4fr 7fr;gap:var(--s8);align-items:start}
+.steps{list-style:none;margin:0;padding:0;counter-reset:step;display:flex;flex-direction:column;gap:var(--s1)}
+.step-tab{all:unset;box-sizing:border-box;display:grid;grid-template-columns:28px 1fr;gap:var(--s3);width:100%;padding:var(--s4);border-radius:12px;cursor:pointer;color:var(--muted);transition:background .2s var(--ease),color .2s var(--ease)}
+.step-tab:hover{color:var(--ink)}
+.step-tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(10,10,10,.06),0 8px 24px -12px rgba(10,10,10,.18)}
+.step-tab:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.step-num{font:500 13px/24px var(--font-ui);font-variant-numeric:tabular-nums}
+.step-tab b{display:block;font-weight:500;font-size:17px;line-height:24px}
+.step-tab > span > span:not(.tbd){display:block;font-size:15px;line-height:1.5;margin-top:2px}
+.panels{position:relative}
+.panel{margin:0}
+.panel img{width:100%;max-height:600px;object-fit:cover;object-position:center;border-radius:20px;background:#fff}
+.panel figcaption{display:none}
+.how-cta{margin-top:var(--s7)}
+
+/* brand band */
+.band{background:var(--ink);color:var(--on-ink)}
+.band .wrap{display:grid;grid-template-columns:1fr 1fr;gap:var(--s8);align-items:center}
+.band p.lede{color:var(--on-ink-muted);margin-top:var(--s5)}
+.band .btn{margin-top:var(--s7)}
+.band-media{position:relative}
+.band-media img{border-radius:20px;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:center 20%}
+.pdp{position:absolute;left:var(--s5);right:var(--s5);bottom:var(--s5);display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--s2) var(--s4);background:#fff;color:var(--ink);border-radius:14px;padding:var(--s4) var(--s5);box-shadow:0 16px 32px -12px rgba(0,0,0,.35);font-family:var(--font-ui)}
+.pdp b{font-weight:600;font-size:15px}
+.pdp span{font-size:14px;color:var(--muted)}
+.pdp i{grid-row:1/3;grid-column:2;font-style:normal;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:1px solid var(--ink);border-radius:999px;font-size:14px;font-weight:500}
+.pdp i svg{width:16px;height:16px;stroke:var(--ink)}
+
+/* garments */
+.garments-head{text-align:center;max-width:720px;margin:0 auto}
+.garments-head .lede{margin:var(--s5) auto 0}
+.garments{padding-bottom:var(--s8)}
+.garment-row{list-style:none;margin:var(--s8) 0 0;padding:0 var(--gutter) var(--s3);scroll-padding-inline:var(--gutter);display:flex;gap:var(--s4);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--hairline) transparent}
+.garment-row li{flex:0 0 auto;width:200px;scroll-snap-align:start}
+.garment-row img{width:200px;height:240px;object-fit:cover;border-radius:16px;background:var(--surface-alt)}
+.garment-row span{display:block;margin-top:var(--s2);font-size:15px;color:var(--muted)}
+
+/* features */
+.features .h2{max-width:18ch}
+.feature-groups{margin-top:var(--s8);display:grid;grid-template-columns:1fr 1fr;gap:var(--s8)}
+.feature-groups h3{font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0;padding-bottom:var(--s4);border-bottom:1px solid var(--ink)}
+.feature-list{list-style:none;margin:0;padding:0}
+.feature-list li{display:grid;grid-template-columns:24px 1fr;gap:var(--s4);padding:var(--s5) 0;border-bottom:1px solid var(--hairline)}
+.feature-list svg{width:22px;height:22px;margin-top:2px;stroke:var(--ink)}
+.feature-list h4{font-size:20px;font-weight:500;letter-spacing:-.015em;line-height:1.3}
+.feature-list p{color:var(--muted);margin-top:var(--s1);max-width:46ch}
+
+/* pricing */
+.pricing{background:var(--surface-alt)}
+.pricing-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:var(--s5)}
+.plans{margin-top:var(--s8);display:grid;grid-template-columns:1fr 1fr;gap:var(--s5)}
+.plan{background:var(--surface);border:1px solid var(--hairline);border-radius:20px;padding:var(--s6);display:flex;flex-direction:column}
+.plan.is-featured{border-color:var(--ink)}
+.plan h3{font-size:20px;font-weight:500;letter-spacing:-.01em}
+.price{margin-top:var(--s4);display:flex;align-items:baseline;gap:var(--s2)}
+.price b{font-weight:400;font-size:56px;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.price span{color:var(--muted)}
+.plan ul{list-style:none;margin:var(--s5) 0 var(--s6);padding:0;display:flex;flex-direction:column;gap:var(--s3)}
+.plan li{display:flex;gap:var(--s3);align-items:flex-start}
+.plan li svg{width:18px;height:18px;margin-top:4px;flex:none}
+.plan .btn{margin-top:auto}
+.plan-note{margin-top:var(--s5);font-size:15px;color:var(--muted)}
+
+/* faq */
+.faq .wrap{display:grid;grid-template-columns:4fr 8fr;gap:var(--s8);align-items:start}
+.faq-side .lede{margin-top:var(--s4)}
+.faq-side .link{margin-top:var(--s4)}
+.faq-list{border-top:1px solid var(--hairline)}
+.faq-list details{border-bottom:1px solid var(--hairline)}
+.faq-list summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:var(--s4);min-height:72px;padding:var(--s4) 0;font-size:19px;font-weight:500;letter-spacing:-.01em}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary svg{width:20px;height:20px;flex:none;transition:transform .25s var(--ease)}
+.faq-list details[open] summary svg{transform:rotate(45deg)}
+.faq-list .answer{padding:0 0 var(--s5);color:var(--ink-2);max-width:65ch}
+.faq-list .answer p+p{margin-top:var(--s3)}
+
+/* close */
+.close .wrap{display:grid;grid-template-columns:7fr 5fr;gap:var(--s8);align-items:start}
+.close .h2{max-width:14ch;font-size:clamp(36px,5vw,64px)}
+.close .wrap > div > .btn{margin-top:var(--s7)}
+.close-terms{margin-top:var(--s4);color:var(--muted);font-size:15px}
+.walkthrough{border:1px solid var(--hairline);border-radius:20px;padding:var(--s6)}
+.walkthrough h3{font-size:22px;font-weight:500;letter-spacing:-.015em;line-height:1.3}
+.walkthrough > p{margin-top:var(--s2);color:var(--muted);font-size:15px}
+.form{margin-top:var(--s5);display:grid;gap:var(--s4)}
+.field label{display:block;font:500 14px/1.4 var(--font-ui);margin-bottom:6px}
+.field label em{font-style:normal;color:var(--muted);font-weight:400}
+.field input,.field select{width:100%;height:48px;border:1px solid #cdd3dc;border-radius:10px;padding:0 14px;font:400 16px var(--font-ui);color:var(--ink);background:#fff}
+.field input::placeholder{color:#6b7380}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.14)}
+.field[data-invalid] input,.field[data-invalid] select{border-color:var(--error)}
+.field .err{display:none;margin-top:6px;font:400 14px var(--font-ui);color:var(--error)}
+.field[data-invalid] .err{display:block}
+.field .help{margin-top:6px;font:400 13px/1.45 var(--font-ui);color:var(--muted)}
+.consent{font:400 13px/1.5 var(--font-ui);color:var(--muted)}
+.form .btn{width:100%}
+.form-success{display:none;margin-top:var(--s5);padding:var(--s5);border-radius:12px;background:#ecfdf3;color:var(--success);font:400 15px/1.5 var(--font-ui)}
+.walkthrough.is-sent .form{display:none}
+.walkthrough.is-sent .form-success{display:block}
+
+/* footer */
+.site-footer{border-top:1px solid var(--hairline);padding:var(--s8) 0 var(--s7)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--s6)}
+.footer-grid p.tag{margin-top:var(--s4);color:var(--muted);max-width:32ch;font-size:15px}
+.footer-col p{font-weight:500;font-size:15px}
+.footer-col ul{list-style:none;margin:var(--s3) 0 0;padding:0}
+.footer-col a{display:flex;align-items:center;min-height:44px;text-decoration:none;color:var(--muted);font-size:15px}
+.footer-col a:hover{color:var(--ink)}
+.legal{margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid var(--hairline);font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5)}
+
+/* mobile sticky install bar */
+.sticky-cta{display:none}
+
+@media (max-width: 960px){
+  .nav,.header-cta{display:none}
+  .menu{display:block;margin-left:auto}
+  .site-header .wrap{height:64px}
+  .hero .wrap{grid-template-columns:1fr;gap:var(--s8);padding-top:var(--s8);padding-bottom:var(--s9)}
+  .demo{justify-self:stretch;width:100%;max-width:440px}
+  .problem .wrap,.how-grid,.band .wrap,.feature-groups,.faq .wrap,.close .wrap{grid-template-columns:1fr;gap:var(--s7)}
+  .steps{display:none}
+  .panels{display:flex;flex-direction:column;gap:var(--s7)}
+  .panel[hidden]{display:block}
+  .panel figcaption{display:block;margin-bottom:var(--s4)}
+  .panel figcaption b{display:block;font-weight:500;font-size:20px;letter-spacing:-.015em}
+  .panel figcaption span{display:block;color:var(--muted);margin-top:var(--s1)}
+  .plans{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-grid > div:first-child{grid-column:1/-1}
+  .sticky-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;align-items:center;justify-content:space-between;gap:var(--s4);padding:var(--s3) var(--s4) calc(var(--s3) + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--hairline);transform:translateY(110%);transition:transform .35s var(--ease)}
+  .sticky-cta.is-on{transform:none}
+  .sticky-cta p{font-size:14px;line-height:1.35;color:var(--muted)}
+  .sticky-cta p strong{display:block;color:var(--ink);font-weight:500;font-size:15px}
+  .sticky-cta .btn{min-height:48px;flex:none}
+  body{padding-bottom:84px}
+}
+@media (max-width: 520px){
+  .logos{gap:var(--s4) var(--s6)}
+  .logos img{height:20px}
+  .stats li{grid-template-columns:1fr;gap:var(--s2)}
+  .demo-stage{padding:var(--s4) var(--s4) var(--s5)}
+  .hero-ctas .btn{width:100%}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M6.5 8v3M10 8v4M13.5 8v3M17 8v4"/></symbol>
+  <symbol id="i-steps" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M7 12h3M14 12h3"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></symbol>
+  <symbol id="i-brush" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5l5 5L11 18l-5-5z"/><path d="M6 13c-2 0-3 1.5-3 3.5V20h3.5C8.5 20 10 19 10 17"/></symbol>
+  <symbol id="i-block" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 9.5h17M3.5 14.5h17"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/></symbol>
+</svg>
+
+<p style="margin:0;background:#fff4dc;color:#6b4200;font:500 13px/1.4 Inter,system-ui,sans-serif;text-align:center;padding:8px 16px;border-bottom:1px dashed #d9a441">Design prototype for review. Not the live site. Yellow tags mark facts still to confirm.</p>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="MyFit home"><img src="assets/img/icon.svg" alt="" width="40" height="40">MyFit</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://www.myfitsize.com/help">Help center</a>
+    </nav>
+    <a class="btn btn-ink header-cta" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener">Install free</a>
+    <details class="menu">
+      <summary aria-label="Open menu"><svg><use href="#i-menu"/></svg></summary>
+      <div class="menu-panel">
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://www.myfitsize.com/help">Help center</a>
+        <a href="https://www.myfitsize.com/contact">Contact us</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero on-ink" id="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <img src="assets/img/hero-2.webp" alt=""><img src="assets/img/hero-4.webp" alt=""><img src="assets/img/hero-8.webp" alt="">
+  </div>
+  <div class="wrap">
+    <div>
+      <h1>Stop losing sales to size guesses.</h1>
+      <p class="hero-sub">Shoppers answer a few quick questions on your product page and get a recommended size from your own size chart. It takes under a minute.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-light btn-lg" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener"><svg><use href="#i-bag"/></svg>Install free on Shopify</a>
+        <a class="link" href="#how">See how setup works</a>
+      </div>
+      <ul class="terms">
+        <li><svg><use href="#i-check"/></svg><span><strong>Free</strong> for 25 quizzes a month</span></li>
+        <li><svg><use href="#i-check"/></svg><span><strong>Unlimited</strong> $4/month</span></li>
+        <li><svg><use href="#i-check"/></svg><span>No developer needed</span></li>
+      </ul>
+      <p class="rating"><svg><use href="#i-star"/></svg><span><strong>5.0</strong> on the Shopify App Store · 6 reviews</span></p>
+    </div>
+
+    <div class="demo" id="demo-player">
+      <p class="demo-caption"><strong>What your shoppers see</strong><span>On your product page</span></p>
+      <div class="demo-stage">
+        <div class="quiz" aria-hidden="true">
+          <div class="quiz-top">Your personalized fit guide</div>
+          <div class="quiz-body">
+            <div class="quiz-title">Find your size</div>
+            <div class="quiz-hint">Fill in your details to get your recommended size</div>
+            <div class="quiz-grid">
+              <div class="quiz-field"><span>Age</span><div>Your age</div></div>
+              <div class="quiz-field"><span>Gender</span><div>Select <svg width="14" height="14"><use href="#i-chev"/></svg></div></div>
+              <div class="quiz-field full"><span>Height</span><div>How tall are you? <b style="font-weight:500">cm</b></div></div>
+              <div class="quiz-field full"><span>Weight</span><div>What's your weight? <b style="font-weight:500">kg</b></div></div>
+            </div>
+            <div class="quiz-actions"><div>Size chart</div><div>Continue</div></div>
+          </div>
+        </div>
+        <video class="demo-video" src="assets/media/demo.mp4" muted playsinline controls preload="none" aria-label="Shopper demo: filling in the MyFit size quiz"></video>
+        <button class="btn btn-light play" type="button" id="play"><svg><use href="#i-play"/></svg>Play shopper demo</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="customers" aria-label="Customers">
+  <div class="wrap">
+    <p>Used by apparel stores like <span class="tbd">VERIFY: all current customers</span></p>
+    <ul class="logos">
+      <li><img src="assets/img/logo-nudge.webp" alt="nudge" width="90"></li>
+      <li><img src="assets/img/logo-lot.webp" alt="LOT." width="90"></li>
+      <li><img src="assets/img/logo-jjshouse.webp" alt="JJ's House" width="130"></li>
+      <li><img src="assets/img/logo-greymoritz.svg" alt="Grey Moritz" width="150"></li>
+      <li><img src="assets/img/logo-nuvira.svg" alt="Nuvira" width="80"></li>
+      <li><img src="assets/img/logo-vila.svg" alt="VILA" width="130"></li>
+      <li><img src="assets/img/logo-girav.webp" alt="Girav" width="90"></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section problem" aria-labelledby="problem-h">
+  <div class="wrap">
+    <div>
+      <h2 class="h2" id="problem-h">Size guesses cost you twice: once at checkout, again at returns.</h2>
+      <a class="btn btn-ink" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener">Install free</a>
+    </div>
+    <ul class="stats">
+      <li><b>42%</b><div><p>of online apparel returns are due to size or fit.</p><span class="tbd">Source needed</span></div></li>
+      <li><b>$25+</b><div><p>to process one size-related return.</p><span class="tbd">Source needed</span></div></li>
+      <li><b>52%</b><div><p>of shoppers hesitate or leave when they're unsure of their size.</p><span class="tbd">Source needed</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section how" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="how-head">
+      <h2 class="h2" id="how-h">Set it up once. It runs on every product page after that.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="steps" role="tablist" aria-label="Setup steps" aria-orientation="vertical">
+        <button class="step-tab" role="tab" id="t1" aria-controls="p1" aria-selected="true"><span class="step-num">1</span><span><b>Import your size chart</b><span>Upload a screenshot. Get a working size chart.</span></span></button>
+        <button class="step-tab" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><span class="step-num">2</span><span><b>Place the block</b><span>Drag the MyFit block exactly where it belongs in the theme editor.</span></span></button>
+        <button class="step-tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span class="step-num">3</span><span><b>Match your brand</b><span>Colors, fonts and button styles match your store.</span></span></button>
+        <button class="step-tab" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1"><span class="step-num">4</span><span><b>Speak their language</b><span>The quiz switches to your shopper's language, including right-to-left. <span class="tbd">VERIFY count</span></span></span></button>
+        <button class="step-tab" role="tab" id="t5" aria-controls="p5" aria-selected="false" tabindex="-1"><span class="step-num">5</span><span><b>See what shoppers did</b><span>Quiz completions and recommended sizes for every product.</span></span></button>
+      </div>
+      <div class="panels">
+        <figure class="panel" role="tabpanel" id="p1" aria-labelledby="t1"><figcaption><b>Import your size chart</b><span>Upload a screenshot. Get a working size chart.</span></figcaption><img src="assets/img/slide-1.webp" alt="Size chart editor built from an uploaded image, with XS to XL rows filled in" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p2" aria-labelledby="t2" hidden><figcaption><b>Place the block</b><span>Drag the MyFit block exactly where it belongs in the theme editor.</span></figcaption><img src="assets/img/slide-4.webp" alt="Shopify theme editor with the MyFit block placed between Variant picker and Buy buttons" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p3" aria-labelledby="t3" hidden><figcaption><b>Match your brand</b><span>Colors, fonts and button styles match your store.</span></figcaption><img src="assets/img/slide-3.webp" alt="Quiz style settings for label text, font size, colors and border radius next to a styled quiz step" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden><figcaption><b>Speak their language</b><span>The quiz switches to your shopper's language, including right-to-left.</span></figcaption><img src="assets/img/slide-5.webp" alt="The quiz shown in German, French and Arabic with a language picker" width="1152" height="1200" loading="lazy"></figure>
+        <figure class="panel" role="tabpanel" id="p5" aria-labelledby="t5" hidden><figcaption><b>See what shoppers did</b><span>Quiz completions and recommended sizes for every product.</span></figcaption><img src="assets/img/slide-2.webp" alt="Merchant dashboard with quiz completions, purchase rate and plan usage" width="1152" height="1200" loading="lazy"></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section band on-ink" aria-labelledby="band-h">
+  <div class="wrap">
+    <div>
+      <h2 class="h2" id="band-h">Looks like part of your store. Not a third-party widget.</h2>
+      <p class="lede">Colors, fonts and button styles match your store. Your shoppers never know it's MyFit.</p>
+      <a class="btn btn-light btn-lg" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener"><svg><use href="#i-bag"/></svg>Install free on Shopify</a>
+    </div>
+    <div class="band-media">
+      <img src="assets/img/store-product.webp" alt="" loading="lazy">
+      <div class="pdp" aria-hidden="true"><b>High-Rise Straight Jeans</b><span>$159 USD</span><i><svg><use href="#i-ruler"/></svg>Find your size</i></div>
+    </div>
+  </div>
+</section>
+
+<section class="section garments" aria-labelledby="garments-h">
+  <div class="wrap garments-head">
+    <h2 class="h2" id="garments-h">If you sell it as apparel, MyFit can size it.</h2>
+    <p class="lede">Every garment maps to a body zone (upper, lower or full body) with a starter set of measurements. You choose which ones count.</p>
+  </div>
+  <ul class="garment-row" aria-label="Supported garment types">
+    <li><img src="assets/img/apparel-tshirt.webp" alt="" loading="lazy"><span>T-shirt</span></li>
+    <li><img src="assets/img/apparel-shirt.webp" alt="" loading="lazy"><span>Shirt</span></li>
+    <li><img src="assets/img/apparel-hoodie.webp" alt="" loading="lazy"><span>Hoodie</span></li>
+    <li><img src="assets/img/apparel-shorts.webp" alt="" loading="lazy"><span>Shorts</span></li>
+    <li><img src="assets/img/apparel-trouser.webp" alt="" loading="lazy"><span>Trousers</span></li>
+    <li><img src="assets/img/apparel-skirt.webp" alt="" loading="lazy"><span>Skirt</span></li>
+    <li><img src="assets/img/apparel-dress.webp" alt="" loading="lazy"><span>Dress</span></li>
+    <li><img src="assets/img/apparel-jumpsuit.webp" alt="" loading="lazy"><span>Jumpsuit</span></li>
+    <li><img src="assets/img/apparel-swimsuit.webp" alt="" loading="lazy"><span>Swimsuit</span></li>
+  </ul>
+</section>
+
+<section class="section features" aria-labelledby="features-h">
+  <div class="wrap">
+    <h2 class="h2" id="features-h">What runs on every product page.</h2>
+    <div class="feature-groups">
+      <div>
+        <h3>For your shoppers</h3>
+        <ul class="feature-list">
+          <li><svg><use href="#i-ruler"/></svg><div><h4>Size recommendations</h4><p>One recommended size per shopper, based on height, weight, age and fit preference.</p></div></li>
+          <li><svg><use href="#i-steps"/></svg><div><h4>Size quiz</h4><p>A short quiz shoppers finish without a measuring tape.</p></div></li>
+          <li><svg><use href="#i-globe"/></svg><div><h4>Their language</h4><p>The quiz runs in your shopper's language. <span class="tbd">VERIFY: 5 or 40+</span></p></div></li>
+        </ul>
+      </div>
+      <div>
+        <h3>For you</h3>
+        <ul class="feature-list">
+          <li><svg><use href="#i-brush"/></svg><div><h4>Brand styling</h4><p>The button and quiz screens use your colors, fonts and layout.</p></div></li>
+          <li><svg><use href="#i-block"/></svg><div><h4>Setup in minutes</h4><p>Install, drag the block into place, go live. No code.</p></div></li>
+          <li><svg><use href="#i-chart"/></svg><div><h4>Dashboard</h4><p>Quiz completions and recommended sizes for every product.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pricing" id="pricing" aria-labelledby="pricing-h">
+  <div class="wrap">
+    <div class="pricing-head">
+      <h2 class="h2" id="pricing-h">Start free. Upgrade when you need more quizzes.</h2>
+      <p class="lede" style="max-width:36ch">Billed through your Shopify account. Switch plans or uninstall anytime.</p>
+    </div>
+    <div class="plans">
+      <article class="plan" aria-labelledby="plan-free">
+        <h3 id="plan-free">Free</h3>
+        <p class="price"><b>$0</b><span>forever</span></p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><span>25 quizzes a month <span class="tbd">VERIFY: what counts as one</span></span></li>
+          <li><svg><use href="#i-check"/></svg>No credit card</li>
+          <li><svg><use href="#i-check"/></svg>Every garment type and brand styling</li>
+        </ul>
+        <a class="btn btn-line" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener">Install free</a>
+      </article>
+      <article class="plan is-featured" aria-labelledby="plan-unl">
+        <h3 id="plan-unl">Unlimited</h3>
+        <p class="price"><b>$4</b><span>per month</span></p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Unlimited quizzes</li>
+          <li><svg><use href="#i-check"/></svg>14-day free trial</li>
+          <li><svg><use href="#i-check"/></svg><span>Everything in Free <span class="tbd">VERIFY: analytics included?</span></span></li>
+        </ul>
+        <a class="btn btn-ink" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener">Start 14-day trial</a>
+      </article>
+    </div>
+    <p class="plan-note">Prices in USD, from the Shopify App Store listing.</p>
+  </div>
+</section>
+
+<section class="section faq" id="faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="faq-side">
+      <h2 class="h2" id="faq-h">Questions before you install.</h2>
+      <a class="link" href="https://www.myfitsize.com/contact">Still have a question? Ask us</a>
+    </div>
+    <div class="faq-list">
+      <details><summary>Is MyFit free to use?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>Yes. The Free plan covers 25 quizzes a month with no credit card. Unlimited is $4/month for unlimited quizzes, with a 14-day free trial. You can switch or uninstall anytime.</p></div></details>
+      <details><summary>Will MyFit slow down my store?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>No. MyFit adds about <span class="tbd">DATA: KB</span>, only on product pages that use the block, and loads after your page content. Shoppers see your page at the same speed.</p></div></details>
+      <details><summary>Does it work with my theme?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>MyFit works with any Online Store 2.0 theme, including Dawn and all free Shopify themes. <span class="tbd">VERIFY: vintage themes</span></p></div></details>
+      <details><summary>What shopper data does MyFit store?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p><span class="tbd">DATA: what is stored, where, how long, GDPR status</span></p></div></details>
+      <details><summary>How accurate are the recommendations?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p><span class="tbd">DATA: method and evidence</span></p></div></details>
+      <details><summary>Do I need a developer?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>No. Install from the Shopify App Store, drag the MyFit block into place in the theme editor, and you're live, usually in a couple of minutes. No code.</p></div></details>
+      <details><summary>How is this different from a size chart?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>A size chart hands shoppers a grid and asks them to measure themselves. MyFit asks a few short questions (gender, age, height, weight and fit preference) and gives one recommended size for that product.</p></div></details>
+      <details><summary>Does MyFit work for all types of apparel?<svg><use href="#i-plus"/></svg></summary><div class="answer"><p>Yes for clothing: tops, bottoms, dresses, outerwear, swimwear and more. Each garment maps to a body zone, and you choose the measurements that matter. <span class="tbd">VERIFY: footwear, kids</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="section close" id="demo" aria-labelledby="close-h">
+  <div class="wrap">
+    <div>
+      <h2 class="h2" id="close-h">Give every shopper a size they can buy with confidence.</h2>
+      <a class="btn btn-ink btn-lg" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener"><svg><use href="#i-bag"/></svg>Install free on Shopify</a>
+      <p class="close-terms">Free for 25 quizzes a month. Unlimited $4/month.</p>
+    </div>
+    <div class="walkthrough" id="walkthrough">
+      <h3>Running a larger store?</h3>
+      <p>Book a 15-minute walkthrough. We'll set it up on your own products and size charts.</p>
+      <form class="form" novalidate>
+        <div class="field"><label for="f-name">First name</label><input id="f-name" name="firstName" autocomplete="given-name" required><p class="err" id="f-name-err">Enter your first name.</p></div>
+        <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="name@yourstore.com" required><p class="err" id="f-email-err">Enter an email like name@yourstore.com.</p></div>
+        <div class="field"><label for="f-store">Store URL</label><input id="f-store" name="store" inputmode="url" placeholder="yourstore.com" required><p class="err" id="f-store-err">Enter your store's web address.</p></div>
+        <div class="field"><label for="f-plan">Which Shopify plan are you on?</label>
+          <select id="f-plan" name="plan" required><option value="">Select a plan</option><option>Shopify</option><option>Shopify Plus</option><option>Not on Shopify yet</option></select>
+          <p class="help">MyFit currently works on Shopify only.</p><p class="err" id="f-plan-err">Choose your Shopify plan.</p></div>
+        <p class="consent">We use these details to contact you about MyFit. You can unsubscribe anytime. Our <a href="https://www.myfitsize.com/privacy">Privacy Policy</a> explains how we handle your data.</p>
+        <button class="btn btn-ink" type="submit">Book my walkthrough</button>
+      </form>
+      <p class="form-success" role="status" id="sent">Thanks. We'll email you within <span class="tbd">DATA: 1 business day</span> to pick a time.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="MyFit home"><img src="assets/img/icon.svg" alt="" width="40" height="40">MyFit</a>
+        <p class="tag">Size recommendations for Shopify apparel stores.</p>
+      </div>
+      <div class="footer-col"><p>Product</p><ul><li><a href="#how">How it works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener">App Store</a></li></ul></div>
+      <div class="footer-col"><p>Resources</p><ul><li><a href="https://www.myfitsize.com/help">Help center</a></li><li><a href="https://www.myfitsize.com/contact">Contact us</a></li></ul></div>
+      <div class="footer-col"><p>Legal</p><ul><li><a href="https://www.myfitsize.com/privacy">Privacy policy</a></li><li><a href="https://www.myfitsize.com/terms">Terms of service</a></li></ul></div>
+    </div>
+    <p class="legal"><span>© 2026 MyFit Inc. <span class="tbd">VERIFY vs Redcircle Digital</span></span></p>
+  </div>
+</footer>
+
+<div class="sticky-cta" id="sticky" aria-hidden="true">
+  <p><strong>Free for 25 quizzes a month</strong>Unlimited $4/month</p>
+  <a class="btn btn-ink" href="https://apps.shopify.com/myfit-size-recommender-quiz" target="_blank" rel="noopener" tabindex="-1">Install free</a>
+</div>
+
+<script>
+// Setup steps: ARIA tabs with arrow-key support
+(function(){
+  const tabs=[...document.querySelectorAll('.step-tab')];
+  function select(t,focus){
+    tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
+    if(focus)t.focus();
+  }
+  tabs.forEach((t,i)=>{
+    t.addEventListener('click',()=>select(t));
+    t.addEventListener('keydown',e=>{
+      const k=e.key;let n=null;
+      if(k==='ArrowDown'||k==='ArrowRight')n=tabs[(i+1)%tabs.length];
+      if(k==='ArrowUp'||k==='ArrowLeft')n=tabs[(i-1+tabs.length)%tabs.length];
+      if(k==='Home')n=tabs[0]; if(k==='End')n=tabs[tabs.length-1];
+      if(n){e.preventDefault();select(n,true);}
+    });
+  });
+})();
+
+// Hero demo: swap the static quiz for the real recording
+document.getElementById('play').addEventListener('click',()=>{
+  const d=document.getElementById('demo-player');const v=d.querySelector('video');
+  d.classList.add('is-playing');v.play().catch(()=>{});v.focus();
+});
+
+// Close menu after choosing a link
+document.querySelectorAll('.menu-panel a').forEach(a=>a.addEventListener('click',()=>a.closest('details').open=false));
+
+// Mobile sticky install bar: on after the hero, off when the closing CTA is in view
+(function(){
+  const bar=document.getElementById('sticky');const link=bar.querySelector('a');
+  let pastHero=false,atClose=false;
+  const sync=()=>{const on=pastHero&&!atClose;bar.classList.toggle('is-on',on);bar.setAttribute('aria-hidden',!on);link.tabIndex=on?0:-1;};
+  new IntersectionObserver(es=>{es.forEach(e=>{pastHero=!e.isIntersecting&&e.boundingClientRect.top<0;});sync();}).observe(document.getElementById('hero'));
+  // hide once the closing section (and everything after it) reaches the viewport
+  new IntersectionObserver(es=>{es.forEach(e=>{atClose=e.isIntersecting||e.boundingClientRect.top<0;});sync();}).observe(document.getElementById('demo'));
+})();
+
+// Walkthrough form: inline validation, then success state
+(function(){
+  const box=document.getElementById('walkthrough');const form=box.querySelector('form');
+  form.addEventListener('submit',e=>{
+    e.preventDefault();let first=null;
+    form.querySelectorAll('input,select').forEach(el=>{
+      const f=el.closest('.field');const ok=el.checkValidity()&&el.value.trim()!=='';
+      if(ok){f.removeAttribute('data-invalid');el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');}
+      else{f.setAttribute('data-invalid','');el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',el.id+'-err');first=first||el;}
+    });
+    if(first){first.focus();return;}
+    box.classList.add('is-sent');document.getElementById('sent').focus?.();
+  });
+})();
+</script>
+</body>
+</html>
